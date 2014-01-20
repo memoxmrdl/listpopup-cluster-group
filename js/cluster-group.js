@@ -1,4 +1,4 @@
-function get_info_group(v) {
+function get_item_of_group(v) {
   var name = "";
   for (var i=0;i<addressPoints.length;i++) {
     var ap = addressPoints[i];
@@ -7,24 +7,25 @@ function get_info_group(v) {
       break;
     }         
   }
+  
   return name;
 }
 
-function render_popup(childs) {
-  var list = content = "";
-  var info;
+function render_list_popup(childs) {
+  var item_list = items_list = "",
+      info;
 
   height = childs.length > 4 ? 250 : (childs.length * 73);
+
   $.each(childs, function(i, v) {
-    info = get_info_group(v._latlng);
-    list += "\n<a class=\"cluster-tile-container\">";
-    list += "<div class=\"cluster-content\">"+ info +"</div>";
-    list += "</a>";
+    item_list = get_item_of_group(v._latlng);
+    items_list += "\n<a class=\"cluster-tile-container\">";
+    items_list += "<div class=\"cluster-content\">"+ item_list +"</div>";
+    items_list += "</a>";
   });
   
   content =  "<div class=\"cluster-modal-container\">";
-  content += "<div class=\"cluster-modal-list\" ";
-  content += "style=\"height:"+ height +"px\">"+ list +"</div>";
+  content += "<div class=\"cluster-modal-list\" style=\"height:"+ height +"px\">"+ items_list +"</div>";
   content += "</div>";
 
   return content;
@@ -54,7 +55,7 @@ markersGroup.on('clusterclick', function (a) {
     zoomAnimation: false,
   })
   .setLatLng(a.latlng)
-  .setContent(render_popup(childs))
+  .setContent(render_list_popup(childs))
   .openOn(map);
 });
 
